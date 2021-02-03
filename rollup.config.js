@@ -32,8 +32,15 @@ const baseConfig = {
                 }]
             ],
             plugins: [
-                '@babel/plugin-proposal-class-properties',
-                '@babel/plugin-proposal-object-rest-spread'
+                [
+                    "import"
+                    , {
+                        "libraryName": "@x-drive/utils"
+                        , "libraryDirectory": "dist/libs"
+                        , "camel2DashComponentName": false
+                    }
+                    , "@x-drive/utils"
+                ]
             ]
         }),
         alias({
