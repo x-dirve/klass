@@ -2,7 +2,55 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var utils = require('@x-drive/utils');
+/**
+ * 数据类型判断
+ * @param  subject 待判断的数据
+ * @param  type    数据类型名字
+ * @return         判断结果
+ */
+function is(subject, type) {
+    return Object.prototype.toString.call(subject).substr(8, type.length).toLowerCase() === type;
+}
+
+/**
+ * 是否是数组
+ * @param  subject 待判断的数据
+ */
+function isObject(subject) {
+    return is(subject, "object");
+}
+
+/**
+ * 是否 undefined
+ * @param  subject 待判断的数据
+ */
+function isUndefined(subject) {
+    return is(subject, "undefined");
+}
+
+/**
+ * 是否是数组
+ * @param  subject 待判断的数据
+ */
+function isArray(subject) {
+    return Array.isArray(subject);
+}
+
+/**
+ * 是否是字符串
+ * @param  subject 待判断的数据
+ */
+function isString(subject) {
+    return is(subject, "string");
+}
+
+/**
+ * 是否是布尔值
+ * @param  subject 待判断的数据
+ */
+function isBoolean(subject) {
+    return is(subject, "boolean");
+}
 
 /**样式连接类型 */
 var ConnectType;
@@ -18,7 +66,7 @@ var FIRST_CHAR_REGEXP = /^./;
  * @param str 待处理字符串
  */
 function firstCharToUpperCase(str) {
-    if (utils.isString(str)) {
+    if (isString(str)) {
         return str.replace(FIRST_CHAR_REGEXP, function (m) { return m.toUpperCase(); });
     }
     return str;
@@ -40,10 +88,10 @@ var defType = ConnectType.Camel;
  * ```
  */
 function config(conf) {
-    if (utils.isObject(conf)) {
+    if (isObject(conf)) {
         var type = conf.type; if ( type === void 0 ) type = ConnectType.Camel;
         var symbol = conf.symbol;
-        if (utils.isString(symbol)) {
+        if (isString(symbol)) {
             // @ts-ignore
             defConnect[type] = symbol;
         }
@@ -70,16 +118,16 @@ function config(conf) {
  * ```
  */
 function klass(config, conditions, prependBase) {
-    if (utils.isUndefined(config)) {
+    if (isUndefined(config)) {
         return "";
     }
     // config 是个数组的直接处理
-    if (utils.isArray(config)) {
+    if (isArray(config)) {
         return config.map(function (item) {
-            if (utils.isString(item)) {
+            if (isString(item)) {
                 return item;
             }
-            if (utils.isObject(item)) {
+            if (isObject(item)) {
                 return klass(item);
             }
             return "";
@@ -92,9 +140,9 @@ function klass(config, conditions, prependBase) {
     // 拼接类型
     var klassConnect = defType;
     // 是否追加基础样式
-    var klassPrepend = utils.isBoolean(prependBase) ? prependBase : false;
+    var klassPrepend = isBoolean(prependBase) ? prependBase : false;
     // 处理配置
-    if (utils.isString(config)) {
+    if (isString(config)) {
         klassBase = config;
     }
     else {
@@ -103,21 +151,21 @@ function klass(config, conditions, prependBase) {
         var type = config.type; if ( type === void 0 ) type = defType;
         var prepend = config.prepend; if ( prepend === void 0 ) prepend = false;
         klassLink = connect || (defConnect[type]);
-        if (!utils.isUndefined(base)) {
+        if (!isUndefined(base)) {
             // @ts-ignore
             klassBase = base;
         }
-        if (!utils.isUndefined(type)) {
+        if (!isUndefined(type)) {
             klassConnect = type;
         }
-        if (utils.isBoolean(prepend)) {
+        if (isBoolean(prepend)) {
             klassPrepend = prepend;
         }
     }
     // 处理条件
     var classNameConditions;
-    if (utils.isUndefined(conditions)) {
-        if (utils.isString(config)) {
+    if (isUndefined(conditions)) {
+        if (isString(config)) {
             classNameConditions = {};
             classNameConditions[("" + config)] = true;
         }

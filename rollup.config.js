@@ -18,7 +18,7 @@ const baseConfig = {
             exports: "named"
         }
     ],
-    external: ['@x-drive/utils'],
+    // external: ['@x-drive/utils'],
     plugins: [
         resolve({
             preferBuiltins: false
@@ -42,14 +42,8 @@ const baseConfig = {
                     , "@x-drive/utils"
                 ]
             ]
-        }),
-        alias({
-            entries: [
-                {
-                    find: '@x-drive/utils',
-                    replacement: join(cwd, 'node_modules/@x-drive/utils/dist/index.esm')
-                }
-            ]
+            , include: "node_modules/@x-drive"
+
         }),
         typescript({
             tsconfigOverride: {
@@ -68,6 +62,35 @@ const esmConfig = Object.assign({}, baseConfig, {
         file: join(cwd, "dist/index.esm.js")
     }),
     plugins: [
+        babel({
+            babelrc: false,
+            presets: [
+                ['@babel/preset-env', {
+                    modules: false
+                }]
+            ],
+            plugins: [
+                [
+                    "import"
+                    , {
+                        "libraryName": "@x-drive/utils"
+                        , "libraryDirectory": "dist/libs"
+                        , "camel2DashComponentName": false
+                    }
+                    , "@x-drive/utils"
+                ]
+            ]
+            , include: "node_modules/@x-drive"
+
+        }),
+        alias({
+            entries: [
+                {
+                    find: '@x-drive/utils',
+                    replacement: join(cwd, 'node_modules/@x-drive/utils/dist/index.esm')
+                }
+            ]
+        }),
         typescript()
     ]
 })

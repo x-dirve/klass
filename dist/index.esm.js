@@ -1,4 +1,52 @@
-import { isUndefined, isArray, isString, isObject, isBoolean } from '@x-drive/utils';
+/**
+ * 数据类型判断
+ * @param  subject 待判断的数据
+ * @param  type    数据类型名字
+ * @return         判断结果
+ */
+function is(subject, type) {
+    return Object.prototype.toString.call(subject).substr(8, type.length).toLowerCase() === type;
+}
+
+/**
+ * 是否是数组
+ * @param  subject 待判断的数据
+ */
+function isObject(subject) {
+    return is(subject, "object");
+}
+
+/**
+ * 是否 undefined
+ * @param  subject 待判断的数据
+ */
+function isUndefined(subject) {
+    return is(subject, "undefined");
+}
+
+/**
+ * 是否是数组
+ * @param  subject 待判断的数据
+ */
+function isArray(subject) {
+    return Array.isArray(subject);
+}
+
+/**
+ * 是否是字符串
+ * @param  subject 待判断的数据
+ */
+function isString(subject) {
+    return is(subject, "string");
+}
+
+/**
+ * 是否是布尔值
+ * @param  subject 待判断的数据
+ */
+function isBoolean(subject) {
+    return is(subject, "boolean");
+}
 
 /**样式连接类型 */
 var ConnectType;
