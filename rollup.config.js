@@ -1,37 +1,40 @@
-const { join } = require("path")
-const alias = require('rollup-plugin-alias')
-const buble = require("rollup-plugin-buble")
-const resolve = require('rollup-plugin-node-resolve')
-const cjs = require('rollup-plugin-commonjs')
-const babel = require('rollup-plugin-babel')
+const typescript = require("rollup-plugin-typescript2");
+const resolve = require("rollup-plugin-node-resolve");
+const cjs = require("rollup-plugin-commonjs");
+const alias = require("rollup-plugin-alias");
+const buble = require("rollup-plugin-buble");
+const babel = require("rollup-plugin-babel");
+const { join } = require("path");
 
-const typescript = require("rollup-plugin-typescript2")
-const cwd = __dirname
+const cwd = __dirname;
 
 const baseConfig = {
-    input: join(cwd, "src/index.ts"),
-    output: [
+    "input": join(cwd, "src/index.ts")
+    ,"output": [
         {
-            file: join(cwd, "dist/index.js"),
-            format: "cjs",
-            sourcemap: true,
-            exports: "named"
+            "file": join(cwd, "dist/index.js")
+            ,"format": "cjs"
+            ,"sourcemap": true
+            ,"exports": "named"
         }
-    ],
+    ]
     // external: ['@x-drive/utils'],
-    plugins: [
+    ,"plugins": [
         resolve({
-            preferBuiltins: false
+            "preferBuiltins": false
         }),
         cjs(),
         babel({
-            babelrc: false,
-            presets: [
-                ['@babel/preset-env', {
-                    modules: false
-                }]
-            ],
-            plugins: [
+            "babelrc": false
+            ,"presets": [
+                [
+                    "@babel/preset-env"
+                    ,{
+                        "modules": false
+                    }
+                ]
+            ]
+            ,"plugins": [
                 [
                     "import"
                     , {
@@ -42,34 +45,37 @@ const baseConfig = {
                     , "@x-drive/utils"
                 ]
             ]
-            , include: "node_modules/@x-drive"
+            , "include": "node_modules/@x-drive"
 
-        }),
-        typescript({
-            tsconfigOverride: {
-                compilerOptions: {
-                    preserveConstEnums: true
+        })
+        ,typescript({
+            "tsconfigOverride": {
+                "compilerOptions": {
+                    "preserveConstEnums": true
                 }
             }
-        }),
-        buble()
+        })
+        ,buble()
     ]
 }
 const esmConfig = Object.assign({}, baseConfig, {
-    output: Object.assign({}, baseConfig.output, {
-        sourcemap: true,
-        format: "es",
-        file: join(cwd, "dist/index.esm.js")
-    }),
-    plugins: [
+    "output": Object.assign({}, baseConfig.output, {
+        "sourcemap": true
+        ,"format": "es"
+        ,"file": join(cwd, "dist/index.esm.js")
+    })
+    ,"plugins": [
         babel({
-            babelrc: false,
-            presets: [
-                ['@babel/preset-env', {
-                    modules: false
-                }]
-            ],
-            plugins: [
+            "babelrc": false,
+            "presets": [
+                [
+                    "@babel/preset-env"
+                    , {
+                        "modules": false
+                    }
+                ]
+            ]
+            ,"plugins": [
                 [
                     "import"
                     , {
@@ -80,30 +86,21 @@ const esmConfig = Object.assign({}, baseConfig, {
                     , "@x-drive/utils"
                 ]
             ]
-            , include: "node_modules/@x-drive"
-
-        }),
-        alias({
-            entries: [
+            , "include": "node_modules/@x-drive"
+        })
+        ,alias({
+            "entries": [
                 {
-                    find: '@x-drive/utils',
-                    replacement: join(cwd, 'node_modules/@x-drive/utils/dist/index.esm')
+                    "find": '@x-drive/utils',
+                    "replacement": join(cwd, 'node_modules/@x-drive/utils/dist/index.esm')
                 }
             ]
-        }),
-        typescript()
+        })
+        ,typescript()
     ]
 })
 
 function rollup() {
-    const target = process.env.TARGET
-
-    if (target === "umd") {
-        return baseConfig
-    } else if (target === "esm") {
-        return esmConfig
-    } else {
-        return [baseConfig, esmConfig]
-    }
+    return [baseConfig, esmConfig];
 }
-module.exports = rollup()
+module.exports = rollup();
