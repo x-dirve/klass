@@ -1,7 +1,7 @@
 {
     "name": "@x-drive/klass",
     "version": "1.0.3",
-    "description": "Be happy",
+    "description": "类 BEM 规则的样式名生成模块，根据条件生成样式列表",
     "author": "digiaries <digiaries@hotmail.com>",
     "license": "MIT",
     "main": "dist/index.js",
@@ -25,7 +25,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@x-drive/utils": "1.1.1"
+        "@x-drive/utils": "1.1.5"
     },
     "devDependencies": {
         "@babel/cli": "7.10.5",
